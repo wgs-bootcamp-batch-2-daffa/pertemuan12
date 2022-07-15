@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var expressLayouts = require('express-ejs-layouts');
 var morgan = require('morgan')
-const { loadContact } = require('./data/Contact')
+const { loadContact, detailContact } = require('./data/Contact')
 
 // Set ejs
 app.set('view engine', 'ejs');
@@ -24,48 +24,35 @@ app.use((req, res, next) => {
 })
 // Page Home
 app.get('/', (req, res) => {
-    tittle = 'Home Page'
-    res.render('index', { tittle })
+    title = 'Home Page'
+    res.render('index', { title })
 })
 // Page About
 app.get('/about', (req, res) => {
     data = {
-        tittle: 'About Page',
+        title: 'About Page',
         name: 'M. Daffa R. A.',
         occupation: 'Founder Daffapedia'
     }
     res.render('about', data)
 })
+// Page Contact Detail
+app.get('/contact/:name', (req, res) => {
+    data = {
+        title: 'Contact Detail',
+        name: req.params.name,
+        contact: detailContact(req.params.name)
+    }
+    res.render('detail', { data })
+})
 // Page Contact
 app.get('/contact', (req, res) => {
     data = {
-        tittle: 'Contact Page',
+        title: 'Contact Page',
         contact: loadContact()
     }
 
     res.render('contact', { data })
-})
-// Page Drinks params
-app.get('/drinks/:minuman', (req, res) => {
-    res.send(
-        'Minuman = ' + req.params.minuman
-    )
-})
-// Page Drinks Get Method
-app.get('/drinks', (req, res) => {
-    res.send(
-        'Minuman = ' + req.query.drink +
-        '<br><br>' +
-        'Keterangan = ' + req.query.description
-    )
-})
-// Page Drinks Post Method
-app.post('/drinks', urlencodedParser, (req, res) => {
-    res.send(
-        'Minuman = ' + req.body.drink +
-        '<br><br>' +
-        'Keterangan = ' + req.body.description
-    )
 })
 // Page Error
 app.use('/', (req, res) => {

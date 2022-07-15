@@ -33,8 +33,28 @@ const loadContact = () => {
     return contacts
 }
 // 
+// VALIDATOR DUPLICATE NAME
+// 
+const duplicateName = (input) => {
+    // Return output
+    return loadContact().find((e) => e.Name.toLowerCase() === input.toLowerCase())
+}
+// 
+// DETAIL CONTACT
+// 
+const detailContact = (input) => {
+    // Check name
+    if (!duplicateName(input)) {
+        return
+    }
+
+    // Return data
+    return loadContact().find(e => e.Name == input)
+}
+// 
 // Export modules
 // 
 module.exports = {
     loadContact,
+    detailContact
 }

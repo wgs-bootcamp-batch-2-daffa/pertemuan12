@@ -1,0 +1,42 @@
+<%- contentFor('navbar') %>
+    <%- include('layouts/navbar') %>
+        <%- contentFor('root') %>
+            <!-- begin::Content -->
+            <div class="row">
+                <!-- begin::Title -->
+                <div class="row mt-5 mb-2">
+                    <h1>
+                        <%= data.title %>
+                    </h1>
+                </div>
+                <!-- end::Title -->
+                <!-- begin::Card -->
+                <div class="row px-4">
+                    <% if (data.contact===undefined) { %>
+                        <div class="alert alert-danger text-center" role="alert">
+                            <%= data.name %> is no exists
+                        </div>
+                        <% } else { %>
+                            <div class="card mt-5" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= data.contact.Name %>
+                                    </h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">
+                                        <%= data.contact.Phone %>
+                                    </h6>
+                                    <p class="card-text">
+                                        <%= data.contact.Email %>
+                                    </p>
+                                </div>
+                            </div>
+                            <% } %>
+                </div>
+                <!-- end::Card -->
+                <!-- begin::Back-Button -->
+                <a href="/contact">
+                    <button type="button" class="btn btn-danger btn-sm col-1 mt-3">Back</button>
+                </a>
+                <!-- end::Back-Button -->
+            </div>
+            <!-- end::Content -->
