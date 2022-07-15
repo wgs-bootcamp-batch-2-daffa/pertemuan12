@@ -28,6 +28,16 @@
                                     <p class="card-text">
                                         <%= data.contact.Email %>
                                     </p>
+                                    <form action="/contact/form-update/<%= data.contact.Name %>" method="get"
+                                        class="d-inline">
+                                        <button type="submit" class="btn btn-info badge rounded-pill">Edit</button>
+                                    </form>
+                                    <form action="/contact/delete/<%= data.contact.Name %>" method="get"
+                                        class="d-inline">
+                                        <input type="hidden" name="name" value="<%= data.contact.Name %> ">
+                                        <button type="submit" class="btn btn-danger badge rounded-pill"
+                                            onclick='confirm(`Sure?`)'>Delete</button>
+                                    </form>
                                 </div>
                             </div>
                             <% } %>

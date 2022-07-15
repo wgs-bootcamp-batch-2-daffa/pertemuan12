@@ -21,6 +21,11 @@
             </h4>
           </div>
           <!-- end::Table-title -->
+          <!-- begin::Add-Contact -->
+          <a href="/contact/add">
+            <button type="button" class="btn btn-primary btn-sm col-1">Add Contact</button>
+          </a>
+          <!-- end::Add-Contact -->
           <div class="col-6">
             <table class="table table-responsive table-hover">
               <thead>
@@ -52,7 +57,7 @@
                             <%= e.Email %>
                           </td>
                           <td>
-                            <a href="/contact/<%= e.Name %> ">
+                            <a href="/contact/<%= e.Name %>">
                               <button type="button" class="btn btn-info badge rounded-pill">Details</button>
                             </a>
                           </td>
