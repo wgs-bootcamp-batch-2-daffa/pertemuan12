@@ -2,15 +2,25 @@
 <%- contentFor('navbar') %>
   <%- include('layouts/navbar') %>
     <!-- end::Navigation -->
-    <!-- begin::Root -->
     <%- contentFor('root') %>
+      <!-- begin::Content -->
       <div id="contact" class="row">
+        <!-- begin::Title -->
         <div class="row my-5">
           <h1>
             <%= data.tittle %>
           </h1>
         </div>
+        <!-- end::Title -->
+        <!-- begin::Table -->
         <div class="row">
+          <!-- begin::Table-title -->
+          <div class="row my-3">
+            <h4>
+              Contact lists
+            </h4>
+          </div>
+          <!-- end::Table-title -->
           <div class="col-4">
             <table class="table table-responsive table-hover">
               <thead>
@@ -22,12 +32,14 @@
               </thead>
               <tbody>
                 <% if (data.contact.length===0) { %>
+                  <!-- begin::Empty-Data -->
                   <tr>
                     <td colspan="3" class="text-center">Contact is empty</td>
                   </tr>
+                  <!-- end::Empty-Data -->
                   <% } %>
-                    <% i=1 %>
-                      <% data.contact.forEach(e=> { %>
+                    <% data.contact.forEach((e,i)=> { %>
+                      <% i++ %>
                         <tr>
                           <th scope="row">
                             <%= i %>
@@ -39,11 +51,11 @@
                             <%= e.Email %>
                           </td>
                         </tr>
-                        <% i++ %>
-                          <% }) %>
+                        <% }) %>
               </tbody>
             </table>
           </div>
         </div>
+        <!-- end::Table -->
       </div>
-      <!-- end::Root -->
+      <!-- end::Content -->
