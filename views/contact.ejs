@@ -1,0 +1,49 @@
+<!-- begin::Navigation -->
+<%- contentFor('navbar') %>
+  <%- include('layouts/navbar') %>
+    <!-- end::Navigation -->
+    <!-- begin::Root -->
+    <%- contentFor('root') %>
+      <div id="contact" class="row">
+        <div class="row my-5">
+          <h1>
+            <%= data.tittle %>
+          </h1>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <table class="table table-responsive table-hover">
+              <thead>
+                <tr>
+                  <th scope="col-2">No</th>
+                  <th scope="col-4">Name</th>
+                  <th scope="col-4">Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (data.contact.length===0) { %>
+                  <tr>
+                    <td colspan="3" class="text-center">Contact is empty</td>
+                  </tr>
+                  <% } %>
+                    <% i=1 %>
+                      <% data.contact.forEach(e=> { %>
+                        <tr>
+                          <th scope="row">
+                            <%= i %>
+                          </th>
+                          <td>
+                            <%= e.Name %>
+                          </td>
+                          <td>
+                            <%= e.Email %>
+                          </td>
+                        </tr>
+                        <% i++ %>
+                          <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- end::Root -->
