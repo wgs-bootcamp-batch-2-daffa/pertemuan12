@@ -23,7 +23,7 @@ app.use(bodyParser.json())
 // Use express-ejs
 app.use(expressLayouts);
 // Use url-encoded
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 // Set express-ejs
 app.set('layout', 'layouts/main');
 // Use public folder

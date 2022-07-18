@@ -1,1 +1,12 @@
-[{"Name":"anjay","Email":"daffaraihan03@gmail.com","Phone":"089663417341"},{"Name":"ucup","Email":"daffaraihan03@gmail.com","Phone":"089663417341"},{"Name":"asd","Email":"asd@gmail.com","Phone":"08966417341"},{"Name":"asdasd","Email":"asd@gmail.com","Phone":"089663417341"},{"Name":"zzz","Email":"zzz@gmail.com","Phone":"08966341341"},{"Name":"aaa","Email":"aaa@gmail.com","Phone":"089663417341"}]
+[
+    {
+        "Name": "anjay",
+        "Email": "daffaraihan03@gmail.com",
+        "Phone": "089663417341"
+    },
+    {
+        "Name": "ucup",
+        "Email": "daffaraihan03@gmail.com",
+        "Phone": "089663417341"
+    }
+]
