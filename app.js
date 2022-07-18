@@ -12,7 +12,7 @@ var bodyParser = require('body-parser');
 
 const { validationResult, check } = require('express-validator');
 
-const { loadContact, detailContact, insertDataContacts, duplicateName, deleteContact } = require('./data/Contact')
+const { loadContact, detailContact, insertDataContacts, duplicateName, deleteContact, updateContact } = require('./data/Contact')
 
 
 
@@ -36,6 +36,7 @@ app.use((req, res, next) => {
 })
 // Use morgan
 app.use(morgan('dev'));
+let flash = false
 
 
 
@@ -53,58 +54,99 @@ app.get('/about', (req, res) => {
     }
     res.render('about', data)
 })
-// Page Add Contact
-app.get('/contact/add', (req, res) => {
-    data = {
-        title: 'Add Contact',
-    }
-
-    res.render('add-contact', { data })
-})
-// Page Add Contact
-app.get('/contact/form-update/:name', (req, res) => {
-    const val = detailContact(req.params.name)
-    data = {
-        title: 'Edit Contact',
-        oldName: val.Name,
-        oldEmail: val.Email,
-        oldPhone: val.Phone
-    }
-
-    res.render('edit-contact', { data })
-})
 // Page Contact Detail
 app.get('/contact/:name', (req, res) => {
+    const val = detailContact(req.params.name)
+    let idName
+    let oldName
+    let oldEmail
+    let oldPhone
+
+    if (val !== undefined) {
+        idName = val.Name
+        oldName = val.Name
+        oldEmail = val.Email
+        oldPhone = val.Phone
+    }
+
     data = {
         title: 'Contact Detail',
         name: req.params.name,
-        contact: detailContact(req.params.name)
+        contact: detailContact(req.params.name),
+        idName,
+        oldName,
+        oldEmail,
+        oldPhone,
+        errors: []
     }
     res.render('detail', { data })
 })
 // Delete Contact
-app.get('/contact/delete/:name', (req, res) => {
-    deleteContact(req.params.name)
+app.post('/contact/delete', (req, res) => {
+    deleteContact(req.body.name)
     res.redirect('/contact')
 })
-// Save Contact
+// Update Contact
 app.post(
-    '/contact',
+    '/update',
     // Validation name
-    check('name').custom((value) => {
-        if (duplicateName(value)) {
-            throw new Error('is already exists');
+    check('name').custom((value, { req }) => {
+        if (duplicateName(value) && value.toLowerCase() !== req.body.idName.toLowerCase()) {
+            throw new Error(`Name is already exists!`);
         }
         return true
     }),
     // Validation email
     check('email')
         .isEmail()
-        .withMessage(`isn't valid email`),
+        .withMessage(`Email isn't valid!`),
     // Validation phone
     check('phone')
         .isMobilePhone('id-ID')
-        .withMessage(`isn't valid mobile phone`),
+        .withMessage(`Phone number isn't valid!`),
+    (req, res) => {
+        result = validationResult(req)
+        if (!result.isEmpty()) {
+            data = {
+                title: 'Edit Contact',
+                errors: result.array(),
+                name: req.body.idName,
+                contact: detailContact(req.body.idName),
+                idName: req.body.idName,
+                oldName: req.body.name,
+                oldEmail: req.body.email,
+                oldPhone: req.body.phone
+            }
+            console.log(data.oldName);
+            res.render('detail', { data });
+            return
+        }
+        flash = 'Update Contact Success!'
+        updateContact(
+            req.body.idName,
+            req.body.name,
+            req.body.email,
+            req.body.phone)
+        res.redirect('/contact')
+    })
+// Save Contact
+app.post(
+    '/save',
+    // Validation name
+    check('name').custom((value) => {
+        if (duplicateName(value)) {
+            throw new Error('Name is already exists!');
+        }
+        return true
+    }),
+    // Validation email
+    check('email')
+        .isEmail()
+        .withMessage(`Email isn't valid!`),
+    // Validation phone
+    check('phone')
+        .isMobilePhone('id-ID')
+        .withMessage(`Phone number isn't valid!`),
     (req, res) => {
         const result = validationResult(req)
         // If not valid
@@ -112,28 +154,31 @@ app.post(
             data = {
                 title: 'Add Contact',
                 errors: result.array(),
+                contact: loadContact(),
                 oldName: req.body.name,
                 oldEmail: req.body.email,
                 oldPhone: req.body.phone
             }
-            res.render('add-contact', { data });
+            res.render('contact', { data });
+            return
         }
         // If valid
-        else {
-            data = {
-                'name': req.body.name,
-                'email': req.body.email,
-                'phone': req.body.phone,
-            }
-            insertDataContacts(data.name, data.email, data.phone)
-            res.redirect('/contact');
+        flash = 'Add Contact Success!'
+        data = {
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
         }
+        insertDataContacts(data.name, data.email, data.phone)
+        res.redirect('/contact');
     })
 // Page Contact
 app.get('/contact', (req, res) => {
     data = {
         title: 'Contact Page',
-        contact: loadContact()
+        contact: loadContact(),
+        errors: [],
+        flash
     }
 
     res.render('contact', { data })

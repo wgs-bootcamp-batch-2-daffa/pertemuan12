@@ -1,52 +1,153 @@
-<%- contentFor('navbar') %>
-    <%- include('layouts/navbar') %>
-        <%- contentFor('root') %>
-            <!-- begin::Content -->
-            <div class="row">
-                <!-- begin::Title -->
-                <div class="row mt-5 mb-2">
-                    <h1>
-                        <%= data.title %>
-                    </h1>
-                </div>
-                <!-- end::Title -->
-                <!-- begin::Card -->
-                <div class="row px-4">
-                    <% if (data.contact===undefined) { %>
-                        <div class="alert alert-danger text-center" role="alert">
-                            <%= data.name %> is no exists
-                        </div>
-                        <% } else { %>
-                            <div class="card mt-5" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <%= data.contact.Name %>
-                                    </h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">
-                                        <%= data.contact.Phone %>
-                                    </h6>
-                                    <p class="card-text">
-                                        <%= data.contact.Email %>
-                                    </p>
-                                    <form action="/contact/form-update/<%= data.contact.Name %>" method="get"
-                                        class="d-inline">
-                                        <button type="submit" class="btn btn-info badge rounded-pill">Edit</button>
-                                    </form>
-                                    <form action="/contact/delete/<%= data.contact.Name %>" method="get"
-                                        class="d-inline">
-                                        <input type="hidden" name="name" value="<%= data.contact.Name %> ">
-                                        <button type="submit" class="btn btn-danger badge rounded-pill"
-                                            onclick='confirm(`Sure?`)'>Delete</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <% } %>
-                </div>
-                <!-- end::Card -->
-                <!-- begin::Back-Button -->
-                <a href="/contact">
-                    <button type="button" class="btn btn-danger btn-sm col-1 mt-3">Back</button>
-                </a>
-                <!-- end::Back-Button -->
+<%- contentFor('root') %>
+    <!-- begin::Navbar -->
+    <%- include('partials/navbar') %>
+        <!-- end::Navbar -->
+        <!-- begin::Content -->
+        <div id="detail" class="row mt-5">
+            <!-- begin::Title -->
+            <div class="row mt-5 mb-2">
+                <h1>
+                    <%= data.title %>
+                </h1>
             </div>
-            <!-- end::Content -->
+            <!-- end::Title -->
+            <!-- begin::Card -->
+            <div class="row px-4">
+                <% if (data.contact===undefined) { %>
+                    <div class="alert alert-danger text-center" role="alert">
+                        <%= data.name %> is no exists
+                    </div>
+                    <% } else { %>
+                        <div class="card mt-5" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= data.contact.Name %>
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    <%= data.contact.Phone %>
+                                </h6>
+                                <p class="card-text">
+                                    <%= data.contact.Email %>
+                                </p>
+                                <button type="button" class="btn btn-info badge rounded-pill" data-bs-toggle="modal"
+                                    data-bs-target="#update" id="updateButton">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button type="button" class="btn btn-danger badge rounded-pill" data-bs-toggle="modal"
+                                    data-bs-target="#delete" id="deleteButton">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+
+                                <!-- begin:Modal_Update -->
+                                <div class="modal fade" id="update" tabindex="-1" role="dialog"
+                                    aria-labelledby="updateLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="updateLabel">Edit Contact</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- begin::Form -->
+                                                <div class="row">
+                                                    <form method="post" action="/update" id="update-form">
+                                                        <input type="hidden" name="idName" value="<%= data.idName %>">
+                                                        <%- include('partials/form-input') %>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-success"
+                                                                    data-bs-target="#confirm-update"
+                                                                    data-bs-toggle="modal">Next</button>
+                                                            </div>
+                                                    </form>
+                                                </div>
+                                                <!-- end::Form -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end:Modal_Update -->
+                                <!-- begin:Confirm_Update -->
+                                <div class="modal fade" id="confirm-update" tabindex="-1" role="dialog"
+                                    aria-labelledby="deleteLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteLabel">
+                                                    Confirm Update Contact</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Update <%= data.contact.Name %> from
+                                                    contact?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-target="#update"
+                                                    data-bs-toggle="modal">Back</button>
+                                                <button type="submit" class="btn btn-success"
+                                                    form="update-form">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end:Confirm_Update -->
+                                <!-- begin:Modal_Delete -->
+                                <div class="modal fade" id="delete" tabindex="-1" role="dialog"
+                                    aria-labelledby="deleteLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteLabel">Delete Contact</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Delete <%= data.contact.Name %> from contact?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <form action="/contact/delete" method="post" class="d-inline">
+                                                    <input type="hidden" name="name" value="<%= data.contact.Name %>">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end:Modal_Delete -->
+                            </div>
+                        </div>
+                        <% } %>
+            </div>
+            <!-- end::Card -->
+            <!-- begin::Back_Button -->
+            <a href="/contact">
+                <div class="d-block">
+                    <button type="button" class="btn btn-danger btn-sm mt-3 px-3 badge rounded-pill">
+                        <i class="bi bi-arrow-left-circle"></i> Back
+                    </button>
+                </div>
+            </a>
+            <!-- end::Back_Button -->
+        </div>
+        <!-- end::Content -->
+        <% if (data.errors.find(e=> e.param === 'name' || e.param === 'email' || e.param === 'phone')) { %>
+            <!-- begin::Custom_Js -->
+            <script>
+                window.onload = function () {
+                    var button = document.getElementById('updateButton');
+                    button.click();
+                }
+            </script>
+            <!-- end::Custom_Js -->
+            <% } %>

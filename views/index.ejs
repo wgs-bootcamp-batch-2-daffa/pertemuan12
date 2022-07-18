@@ -1,12 +1,13 @@
-<%- contentFor('navbar') %>
-  <%- include('layouts/navbar') %>
-    <%- contentFor('root') %>
-      <!-- begin::Content -->
-      <div id="home" class="row">
-        <div id="tittle" class="row my-5">
-          <h1>
-            <%= title %>
-          </h1>
-        </div>
+<%- contentFor('root') %>
+  <!-- begin::Navbar -->
+  <%- include('partials/navbar') %>
+    <!-- end::Navbar -->
+    <!-- begin::Content -->
+    <div id="home" class="row mt-5">
+      <div id="tittle" class="row my-5">
+        <h1>
+          <%= title %>
+        </h1>
       </div>
-      <!-- end::Content -->
+    </div>
+    <!-- end::Content -->

@@ -1,0 +1,33 @@
+<div class="mb-3 col-6 mx-auto">
+    <label for="exampleFormControlInput1" class="form-label">Name</label>
+    <input autofocus autocomplete="off" class="form-control form-control-sm
+<%= (data.errors.find(e => e.param === 'name')) ? 'is-invalid' : '' %>" type="text" value="<%= data.oldName %>"
+        placeholder="Name" aria-label=".form-control-sm example" name="name" required>
+    <% if (data.errors.find(e=> e.param === 'name')) { %>
+        <div class="invalid-feedback">
+            <%= data.errors.find(e=> e.param === 'name').msg %>
+        </div>
+        <% } %>
+</div>
+<div class="mb-3 col-6 mx-auto">
+    <label for="exampleFormControlInput1" class="form-label">Email</label>
+    <input autocomplete="off" class="form-control form-control-sm
+<%= (data.errors.find(e => e.param === 'email')) ? 'is-invalid' : '' %>" type="email" value="<%= data.oldEmail %>"
+        placeholder="Email" aria-label=".form-control-sm example" name="email" required>
+    <% if (data.errors.find(e=> e.param === 'email')) { %>
+        <div class="invalid-feedback">
+            <%= data.errors.find(e=> e.param === 'email').msg %>
+        </div>
+        <% } %>
+</div>
+<div class="mb-3 col-6 mx-auto">
+    <label for="exampleFormControlInput1" class="form-label">Phone</label>
+    <input autocomplete="off" class="form-control form-control-sm
+<%= (data.errors.find(e => e.param === 'phone')) ? 'is-invalid' : '' %>" type="number" value="<%= data.oldPhone %>"
+        placeholder="Phone" aria-label=".form-control-sm example" name="phone" required>
+    <% if (data.errors.find(e=> e.param === 'phone')) { %>
+        <div class="invalid-feedback">
+            <%= data.errors.find(e=> e.param === 'phone').msg %>
+        </div>
+        <% } %>
+</div>

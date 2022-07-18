@@ -1,72 +1,122 @@
-<%- contentFor('navbar') %>
+<%- contentFor('root') %>
   <!-- begin::Navbar -->
-  <%- include('layouts/navbar') %>
-    <%- contentFor('root') %>
-      <!-- end::Navbar -->
-      <!-- begin::Content -->
-      <div id="contact" class="row">
-        <!-- begin::Title -->
-        <div class="row my-5">
-          <h1>
-            <%= data.title %>
-          </h1>
-        </div>
-        <!-- end::Title -->
-        <!-- begin::Table -->
-        <div class="row">
-          <!-- begin::Table-title -->
-          <div class="row my-3">
-            <h4>
-              Contact lists
-            </h4>
-          </div>
-          <!-- end::Table-title -->
-          <!-- begin::Add-Contact -->
-          <a href="/contact/add">
-            <button type="button" class="btn btn-primary btn-sm col-1">Add Contact</button>
-          </a>
-          <!-- end::Add-Contact -->
-          <div class="col-6">
-            <table class="table table-responsive table-hover">
-              <thead>
-                <tr>
-                  <th scope="col-2">No</th>
-                  <th scope="col-3">Name</th>
-                  <th scope="col-3">Email</th>
-                  <th scope="col-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% if (data.contact.length===0) { %>
-                  <!-- begin::Empty-Data -->
-                  <tr>
-                    <td colspan="3" class="text-center">Contact is empty</td>
-                  </tr>
-                  <!-- end::Empty-Data -->
-                  <% } %>
-                    <% data.contact.forEach((e,i)=> { %>
-                      <% i++ %>
-                        <tr>
-                          <th scope="row">
-                            <%= i %>
-                          </th>
-                          <td>
-                            <%= e.Name %>
-                          </td>
-                          <td>
-                            <%= e.Email %>
-                          </td>
-                          <td>
-                            <a href="/contact/<%= e.Name %>">
-                              <button type="button" class="btn btn-info badge rounded-pill">Details</button>
-                            </a>
-                          </td>
-                        </tr>
-                        <% }) %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!-- end::Table -->
+  <%- include('partials/navbar') %>
+    <!-- end::Navbar -->
+    <!-- begin::Content -->
+    <div id="contact" class="row mt-5">
+      <!-- begin::Title -->
+      <div class="row my-5">
+        <h1>
+          <%= data.title %>
+        </h1>
       </div>
-      <!-- end::Content -->
+      <!-- end::Title -->
+      <!-- begin::Table -->
+      <div class="row">
+        <!-- begin::Table_Title -->
+        <div class="row my-3">
+          <h4>
+            Contact lists
+          </h4>
+        </div>
+        <!-- end::Table_Title -->
+        <% if (data.flash) { %>
+          <!-- begin::Flash_Message -->
+          <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            <strong>
+              <%= data.flash %>
+            </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <!-- end::Flash_Message -->
+          <% } %>
+            <!-- begin::Add_Contact -->
+            <div class="d-flex">
+              <button type="button" class="btn btn-primary badge rounded-pill" data-bs-toggle="modal"
+                data-bs-target="#add" id="addButton">
+                <i class="bi bi-person-plus"></i> New Contact
+              </button>
+            </div>
+            <!-- end::Add_Contact -->
+            <div class="col-6">
+              <table class="table table-responsive table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col-2">No</th>
+                    <th scope="col-3">Name</th>
+                    <th scope="col-3">Email</th>
+                    <th scope="col-3">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (data.contact.length===0) { %>
+                    <!-- begin::Empty_Data -->
+                    <tr>
+                      <td colspan="3" class="text-center">Contact is empty</td>
+                    </tr>
+                    <!-- end::Empty_Data -->
+                    <% } %>
+                      <% data.contact.forEach((e,i)=> { %>
+                        <% i++ %>
+                          <tr>
+                            <th scope="row">
+                              <%= i %>
+                            </th>
+                            <td>
+                              <%= e.Name %>
+                            </td>
+                            <td>
+                              <%= e.Email %>
+                            </td>
+                            <td>
+                              <a href="/contact/<%= e.Name %>">
+                                <button type="button" class="btn btn-info badge rounded-pill">
+                                  <i class="bi bi-info-circle"></i> Details
+                                </button>
+                              </a>
+                            </td>
+                          </tr>
+                          <% }) %>
+                </tbody>
+              </table>
+            </div>
+      </div>
+      <!-- end::Table -->
+    </div>
+    <!-- end::Content -->
+    <!-- begin:Modal_Add_Contact -->
+    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="updateLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateLabel">Edit Contact</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- begin::Form_Save_Contact -->
+            <div class="row">
+              <form method="post" action="/save">
+                <%- include('partials/form-input') %>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                  </div>
+              </form>
+            </div>
+            <!-- end::Form_Save_Contact -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end:Modal_Add_Contact -->
+    <% if (data.errors.find(e=> e.param === 'name' || e.param === 'email' || e.param === 'phone')) { %>
+      <!-- begin::Custom_Js -->
+      <script>
+        window.onload = function () {
+          var button = document.getElementById('addButton');
+          button.click();
+        }
+      </script>
+      <!-- end::Custom_Js -->
+      <% } %>

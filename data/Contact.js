@@ -2,7 +2,6 @@
 // All require module
 // 
 const fs = require('fs')
-const validator = require('validator')
 // 
 // DATA CONTACT VALIDATOR FUNCTION
 // 
@@ -16,25 +15,6 @@ const folderValidator = (folder, fileJson) => {
     if (!fs.existsSync(fileJson)) {
         fs.writeFileSync(fileJson, '[]', 'utf8')
     }
-}
-// 
-// VALIDATOR INPUT
-// 
-const validation = (email, phone) => {
-    // Validator email
-    if (!validator.isEmail(email)) {
-        // Return output
-        return false
-    }
-
-    // Validator phone
-    if (!validator.isMobilePhone(phone, 'id-ID')) {
-        // Return output
-        return false
-    }
-
-    // Return output
-    return true
 }
 // 
 // LOAD CONTACT
@@ -69,7 +49,7 @@ const detailContact = (input) => {
     }
 
     // Return data
-    return loadContact().find(e => e.Name == input)
+    return duplicateName(input)
 }
 // 
 // INSERT DATA CONTACTS
@@ -88,6 +68,32 @@ const insertDataContacts = (Name, Email, Phone) => {
 
     // Insert data
     dataContacts.push(contact)
+    fs.writeFileSync('./data/contacts.json', JSON.stringify(dataContacts))
+
+    // Return Success
+    return
+}
+// 
+// INSERT DATA CONTACTS
+// 
+const updateContact = (idName, Name, Email, Phone) => {
+    // Initial folder & file json
+    const folder = './data'
+    const fileJson = './data/contacts.json'
+
+    // Validator folder json
+    folderValidator(folder, fileJson)
+
+    // Initial data
+    const dataContacts = loadContact()
+    const update = dataContacts.find(e => e.Name === idName)
+
+    console.log(update);
+    update.Name = Name
+    update.Email = Email
+    update.Phone = Phone
+
+    // Insert data
     fs.writeFileSync('./data/contacts.json', JSON.stringify(dataContacts))
 
     // Return Success
@@ -116,5 +122,6 @@ module.exports = {
     detailContact,
     insertDataContacts,
     duplicateName,
-    deleteContact
+    deleteContact,
+    updateContact
 }
