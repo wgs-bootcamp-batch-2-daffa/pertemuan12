@@ -13,7 +13,7 @@
             <!-- end::Title -->
             <!-- begin::Card -->
             <div class="row px-4">
-                <% if (data.contact===undefined) { %>
+                <% if (!data.contact) { %>
                     <div class="alert alert-danger text-center" role="alert">
                         <%= data.name %> is no exists
                     </div>
@@ -21,13 +21,13 @@
                         <div class="card mt-5" style="width: 18rem;">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <%= data.contact.Name %>
+                                    <%= data.contact.name %>
                                 </h5>
                                 <h6 class="card-subtitle mb-2 text-muted">
-                                    <%= data.contact.Phone %>
+                                    <%= data.contact.phone %>
                                 </h6>
                                 <p class="card-text">
-                                    <%= data.contact.Email %>
+                                    <%= data.contact.email %>
                                 </p>
                                 <button type="button" class="btn btn-info badge rounded-pill" data-bs-toggle="modal"
                                     data-bs-target="#update" id="updateButton">
@@ -83,7 +83,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                Update <%= data.contact.Name %> from
+                                                Update <%= data.contact.name %> from
                                                     contact?
                                             </div>
                                             <div class="modal-footer">
@@ -108,14 +108,14 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                Delete <%= data.contact.Name %> from contact?
+                                                Delete <%= data.contact.name %> from contact?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                                     Close
                                                 </button>
                                                 <form action="/contact/delete" method="post" class="d-inline">
-                                                    <input type="hidden" name="name" value="<%= data.contact.Name %>">
+                                                    <input type="hidden" name="name" value="<%= data.contact.name %>">
                                                     <button type="submit" class="btn btn-danger">
                                                         Delete
                                                     </button>
