@@ -16,7 +16,7 @@ exports.findOne = async (column, input) => {
     const query = await pool.query(`
     SELECT * 
     FROM ${table} 
-    WHERE ${column} LIKE '${input}'
+    WHERE ${column} = '${input}'
     `)
 
     return query
